@@ -10,48 +10,56 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <div class="sidebar">
+    <div class="app-container" role="main">
+        <div class="sidebar" role="navigation" aria-label="Chat threads">
             <h2>Threads</h2>
-            <ul id="thread-list" class="thread-list"></ul>
+            <ul id="thread-list" class="thread-list" role="listbox" aria-label="List of chat threads"></ul>
             <div class="sidebar-controls">
-                <button id="new-thread-button">+ New Thread</button>
-                <button id="clear-all-button">Clear All</button>
+                <button id="new-thread-button" aria-label="Create new chat thread">+ New Thread</button>
+                <button id="clear-all-button" aria-label="Clear all chat threads">Clear All</button>
             </div>
         </div>
         <div class="main-content">
-            <div class="ide-container">
+            <div class="ide-container" role="application" aria-label="AI Chat Interface">
                 <!-- TOP BAR -->
-                <div class="ide-header">
+                <div class="ide-header" role="toolbar" aria-label="Chat controls">
                     <div class="window-controls">
-                        <span class="control-dot" style="background-color: #ff5f56;"></span>
-                        <span class="control-dot" style="background-color: #ffbd2e;"></span>
-                        <span class="control-dot" style="background-color: #27c93f;"></span>
+                        <span class="control-dot" style="background-color: #ff5f56;" aria-hidden="true"></span>
+                        <span class="control-dot" style="background-color: #ffbd2e;" aria-hidden="true"></span>
+                        <span class="control-dot" style="background-color: #27c93f;" aria-hidden="true"></span>
                     </div>
-                    <div class="file-tab">
+                    <div class="file-tab" aria-hidden="true">
                         catbot.ai.js
                     </div>
                     <div class="bot-mode-switcher">
                         <label for="bot-mode">Bot Mode:</label>
-                        <select id="bot-mode">
+                        <select id="bot-mode" aria-label="Select bot mode">
                             <option value="playful">Playful</option>
                             <option value="expert">Coding Expert</option>
                             <option value="debugger">Helpful Debugger</option>
+                            <option value="friendly">Friendly</option>
+                            <option value="coder">Coder</option>
+                            <option value="helper">Helper</option>
+                            <option value="debug">Debug</option>
                         </select>
+                    </div>
+                    <div class="preferences-controls">
+                        <button id="sound-toggle" class="pref-toggle" aria-label="Toggle sound" title="Toggle sound">🔊</button>
+                        <button id="theme-toggle" class="pref-toggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
                     </div>
                 </div>
 
                 <!-- CHAT AREA -->
-                <div id="chat-log" class="chat-log" aria-live="polite" aria-atomic="false">
+                <div id="chat-log" class="chat-log" aria-live="polite" aria-atomic="false" role="log" aria-label="Chat conversation">
                     <!-- Messages will be appended here -->
                 </div>
 
                 <!-- INPUT AREA -->
-                <div class="chat-input-area">
-                    <span class="prompt-symbol">&gt;</span>
-                    <input type="text" id="chat-input" placeholder="Type your command or question here..." autocomplete="off" maxlength="2000">
-                    <span id="char-counter">0 / 2000</span>
-                    <button id="send-button" class="send-button" aria-label="Run command">
+                <div class="chat-input-area" role="form">
+                    <span class="prompt-symbol" aria-hidden="true">&gt;</span>
+                    <input type="text" id="chat-input" placeholder="Type your command or question here..." autocomplete="off" maxlength="2000" aria-label="Type your message">
+                    <span id="char-counter" aria-live="polite">0 / 2000</span>
+                    <button id="send-button" class="send-button" aria-label="Send message">
                         ▶
                     </button>
                 </div>
@@ -60,8 +68,8 @@
     </div>
 
     <!-- DEV PANEL -->
-    <div id="dev-panel" class="dev-panel hidden">
-        <h2>Developer Panel</h2>
+    <div id="dev-panel" class="dev-panel hidden" role="dialog" aria-labelledby="dev-panel-title" aria-modal="true">
+        <h2 id="dev-panel-title">Developer Panel</h2>
         <div class="dev-panel-content">
             <div class="dev-section">
                 <h3>Conversation State</h3>
@@ -75,14 +83,25 @@
                 <h3>Bot Config</h3>
                 <pre id="dev-bot-config"></pre>
             </div>
+            <div class="dev-section">
+                <h3>Active Bot Mode</h3>
+                <pre id="dev-active-mode"></pre>
+            </div>
+            <div class="dev-section">
+                <h3>Current Thread Info</h3>
+                <pre id="dev-thread-info"></pre>
+            </div>
         </div>
         <div class="dev-controls">
             <button id="dev-reset-convo">Reset Conversation</button>
             <button id="dev-clear-storage">Clear Local Storage</button>
+            <button id="dev-export-all">Export All Threads</button>
+            <button id="dev-import-data">Import Data</button>
         </div>
     </div>
 
     <audio id="send-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
+    <audio id="receive-sound" src="https://www.soundjay.com/buttons/sounds/button-17.mp3" preload="auto"></audio>
 
     <script src="script.js"></script>
 </body>
