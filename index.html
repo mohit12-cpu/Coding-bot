@@ -10,66 +10,98 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container" role="main">
-        <div class="sidebar" role="navigation" aria-label="Chat threads">
+    <div class="app-container">
+        <div class="sidebar">
             <h2>Threads</h2>
-            <ul id="thread-list" class="thread-list" role="listbox" aria-label="List of chat threads"></ul>
+            <ul id="thread-list" class="thread-list"></ul>
             <div class="sidebar-controls">
-                <button id="new-thread-button" aria-label="Create new chat thread">+ New Thread</button>
-                <button id="clear-all-button" aria-label="Clear all chat threads">Clear All</button>
+                <button id="new-thread-button">+ New Thread</button>
+                <button id="clear-all-button">Clear All</button>
             </div>
         </div>
         <div class="main-content">
-            <div class="ide-container" role="application" aria-label="AI Chat Interface">
+            <div class="ide-container">
                 <!-- TOP BAR -->
-                <div class="ide-header" role="toolbar" aria-label="Chat controls">
+                <div class="ide-header">
                     <div class="window-controls">
-                        <span class="control-dot" style="background-color: #ff5f56;" aria-hidden="true"></span>
-                        <span class="control-dot" style="background-color: #ffbd2e;" aria-hidden="true"></span>
-                        <span class="control-dot" style="background-color: #27c93f;" aria-hidden="true"></span>
+                        <span class="control-dot" style="background-color: #ff5f56;"></span>
+                        <span class="control-dot" style="background-color: #ffbd2e;"></span>
+                        <span class="control-dot" style="background-color: #27c93f;"></span>
                     </div>
-                    <div class="file-tab" aria-hidden="true">
+                    <div class="file-tab">
                         catbot.ai.js
                     </div>
                     <div class="bot-mode-switcher">
                         <label for="bot-mode">Bot Mode:</label>
-                        <select id="bot-mode" aria-label="Select bot mode">
+                        <select id="bot-mode">
                             <option value="playful">Playful</option>
                             <option value="expert">Coding Expert</option>
                             <option value="debugger">Helpful Debugger</option>
-                            <option value="friendly">Friendly</option>
-                            <option value="coder">Coder</option>
-                            <option value="helper">Helper</option>
-                            <option value="debug">Debug</option>
                         </select>
                     </div>
-                    <div class="preferences-controls">
-                        <button id="sound-toggle" class="pref-toggle" aria-label="Toggle sound" title="Toggle sound">🔊</button>
-                        <button id="theme-toggle" class="pref-toggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+                    <!-- Voice Mode Switcher -->
+                    <div class="media-mode-switcher">
+                        <button id="text-mode" class="mode-button active" title="Text Mode">⌨️</button>
+                        <button id="voice-mode" class="mode-button" title="Voice Mode">🎤</button>
                     </div>
                 </div>
 
                 <!-- CHAT AREA -->
-                <div id="chat-log" class="chat-log" aria-live="polite" aria-atomic="false" role="log" aria-label="Chat conversation">
+                <div id="chat-log" class="chat-log" aria-live="polite" aria-atomic="false">
                     <!-- Messages will be appended here -->
                 </div>
 
                 <!-- INPUT AREA -->
-                <div class="chat-input-area" role="form">
-                    <span class="prompt-symbol" aria-hidden="true">&gt;</span>
-                    <input type="text" id="chat-input" placeholder="Type your command or question here..." autocomplete="off" maxlength="2000" aria-label="Type your message">
-                    <span id="char-counter" aria-live="polite">0 / 2000</span>
-                    <button id="send-button" class="send-button" aria-label="Send message">
+                <div class="chat-input-area">
+                    <span class="prompt-symbol">&gt;</span>
+                    <input type="text" id="chat-input" placeholder="Type your command or question here..." autocomplete="off" maxlength="2000">
+                    <button id="mic-button" class="mic-button" title="Voice Input">
+                        <span class="mic-icon">🎤</span>
+                        <span class="listening-indicator"></span>
+                    </button>
+                    <span id="char-counter">0 / 2000</span>
+                    <button id="send-button" class="send-button" aria-label="Run command">
                         ▶
                     </button>
                 </div>
+                
+                <!-- Voice Settings Panel -->
+                <div id="voice-settings-panel" class="voice-settings-panel hidden">
+                    <div class="voice-settings-content">
+                        <h3>Voice Settings</h3>
+                        <div class="setting-group">
+                            <label for="language-mode">Language:</label>
+                            <select id="language-mode">
+                                <option value="ne-NP">Nepali 🇳🇵</option>
+                                <option value="en-US">English 🇬🇧</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label for="voice-volume">Volume:</label>
+                            <input type="range" id="voice-volume" min="0" max="1" step="0.1" value="1">
+                        </div>
+                        <div class="setting-group">
+                            <label for="voice-pitch">Pitch:</label>
+                            <input type="range" id="voice-pitch" min="0" max="2" step="0.1" value="1">
+                        </div>
+                        <div class="setting-group">
+                            <label for="voice-toggle">Voice Output:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="voice-toggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <button id="close-voice-settings">Close</button>
+                    </div>
+                </div>
+                <button id="voice-settings-toggle" class="voice-settings-toggle">⚙️</button>
             </div>
         </div>
     </div>
 
     <!-- DEV PANEL -->
-    <div id="dev-panel" class="dev-panel hidden" role="dialog" aria-labelledby="dev-panel-title" aria-modal="true">
-        <h2 id="dev-panel-title">Developer Panel</h2>
+    <div id="dev-panel" class="dev-panel hidden">
+        <h2>Developer Panel</h2>
         <div class="dev-panel-content">
             <div class="dev-section">
                 <h3>Conversation State</h3>
@@ -83,25 +115,14 @@
                 <h3>Bot Config</h3>
                 <pre id="dev-bot-config"></pre>
             </div>
-            <div class="dev-section">
-                <h3>Active Bot Mode</h3>
-                <pre id="dev-active-mode"></pre>
-            </div>
-            <div class="dev-section">
-                <h3>Current Thread Info</h3>
-                <pre id="dev-thread-info"></pre>
-            </div>
         </div>
         <div class="dev-controls">
             <button id="dev-reset-convo">Reset Conversation</button>
             <button id="dev-clear-storage">Clear Local Storage</button>
-            <button id="dev-export-all">Export All Threads</button>
-            <button id="dev-import-data">Import Data</button>
         </div>
     </div>
 
     <audio id="send-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
-    <audio id="receive-sound" src="https://www.soundjay.com/buttons/sounds/button-17.mp3" preload="auto"></audio>
 
     <script src="script.js"></script>
 </body>
